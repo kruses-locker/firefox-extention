@@ -11,9 +11,9 @@
   'use strict';
 
   /* ==========================================================================
-     YouTube Music Playlists Configuration
-     Customize your playlists, local cover paths, and URLs below:
-     ========================================================================== */
+   * YouTube Music Playlists Configuration
+   * Customize your playlists, local cover paths, and URLs below:
+   * ========================================================================== */
 
   /**
    * Whether clicking a playlist opens in a new browser tab or navigates current tab
@@ -27,33 +27,33 @@
   const DEFAULT_YTM_PLAYLISTS = [
     {
       id: 'ytm-seed-1',
-      title: "ANYTHING ELSE",
-      cover: "assets/studio_square_thumbnail.jpg",
-      url: "https://music.youtube.com/playlist?list=PLctoddGQzhMw&si=AHwkbZC4nvFJ8Az8"
+ title: "ANYTHING ELSE",
+ cover: "assets/studio_square_thumbnail.jpg",
+ url: "https://music.youtube.com/playlist?list=PLctoddGQzhMw&si=AHwkbZC4nvFJ8Az8"
     },
     {
       id: 'ytm-seed-2',
-      title: "VELVET & SYNTH",
-      cover: "assets/2.jpg",
-      url: "https://music.youtube.com/playlist?list=PLLWOVSjw6agI&si=f-v2hDukdiiyhmUw"
+ title: "VELVET & SYNTH",
+ cover: "assets/2.jpg",
+ url: "https://music.youtube.com/playlist?list=PLLWOVSjw6agI&si=f-v2hDukdiiyhmUw"
     },
     {
       id: 'ytm-seed-3',
-      title: "COUNTRY MUSIC",
-      cover: "assets/3.jpg",
-      url: "https://music.youtube.com/playlist?list=PLRXZN7fxv1BCZ4ojEjsU84lm-J40jHFFC&si=RlI9RX5zyLeI9HgZ"
+ title: "COUNTRY MUSIC",
+ cover: "assets/3.jpg",
+ url: "https://music.youtube.com/playlist?list=PLRXZN7fxv1BCZ4ojEjsU84lm-J40jHFFC&si=RlI9RX5zyLeI9HgZ"
     },
     {
       id: 'ytm-seed-4',
-      title: "SOFT SUNLIGHT",
-      cover: "assets/4.jpg",
-      url: "https://music.youtube.com/playlist?list=PLRXZN7fxv1BDzwAdCkJgx-BXxNc2oufjY&si=0bYBxXrM86cQfV0i"
+ title: "SOFT SUNLIGHT",
+ cover: "assets/4.jpg",
+ url: "https://music.youtube.com/playlist?list=PLRXZN7fxv1BDzwAdCkJgx-BXxNc2oufjY&si=0bYBxXrM86cQfV0i"
     }
   ];
 
   /* ==========================================================================
-     1. Storage & WebExtension API Abstraction Layer
-     ========================================================================== */
+   * 1. Storage & WebExtension API Abstraction Layer
+   * ========================================================================== */
 
   const extensionApi = (function () {
     // Firefox WebExtension standard
@@ -67,8 +67,8 @@
         storage: {
           local: {
             get: (keys) => new Promise((resolve) => chrome.storage.local.get(keys, resolve)),
-            set: (items) => new Promise((resolve) => chrome.storage.local.set(items, resolve)),
-            remove: (keys) => new Promise((resolve) => chrome.storage.local.remove(keys, resolve))
+                        set: (items) => new Promise((resolve) => chrome.storage.local.set(items, resolve)),
+                        remove: (keys) => new Promise((resolve) => chrome.storage.local.remove(keys, resolve))
           }
         },
         topSites: chrome.topSites ? {
@@ -127,82 +127,84 @@
   })();
 
   /* ==========================================================================
-     2. Constants & Default State
-     ========================================================================== */
+   * 2. Constants & Default State
+   * ========================================================================== */
 
   const STORAGE_KEYS = {
     PINNED_SHORTCUTS: 'pinned_shortcuts',
-    HIDDEN_URLS: 'hidden_urls',
-    THEME_CONFIG: 'theme_config',
-    WALLPAPER_CONFIG: 'wallpaper_config',
-    MOVIE_WATCHLIST: 'movie_watchlist',
-    CUSTOM_YTM_PLAYLISTS: 'custom_ytm_playlists'
+ HIDDEN_URLS: 'hidden_urls',
+ THEME_CONFIG: 'theme_config',
+ WALLPAPER_CONFIG: 'wallpaper_config',
+ MOVIE_WATCHLIST: 'movie_watchlist',
+ CUSTOM_YTM_PLAYLISTS: 'custom_ytm_playlists',
+ TMDB_API_KEY: 'tmdb_api_key',
+ SEARCH_ENGINE: 'search_engine'
   };
 
   const THEME_PRESETS = [
     {
       id: 'velvet-rose',
-      name: 'Velvet & Rose',
-      bgBase: '#12090c',
-      bgGlow: '#241117',
-      bgElevated: '#1a0d12',
-      textPrimary: '#faf3f3',
-      accent: '#e11d48',
-      accentSoft: '#fb7185'
+ name: 'Velvet & Rose',
+ bgBase: '#12090c',
+ bgGlow: '#241117',
+ bgElevated: '#1a0d12',
+ textPrimary: '#faf3f3',
+ accent: '#e11d48',
+ accentSoft: '#fb7185'
     },
     {
       id: 'midnight-cyan',
-      name: 'Midnight & Cyan',
-      bgBase: '#090d16',
-      bgGlow: '#111c30',
-      bgElevated: '#0e1524',
-      textPrimary: '#f1f5f9',
-      accent: '#06b6d4',
-      accentSoft: '#22d3ee'
+ name: 'Midnight & Cyan',
+ bgBase: '#090d16',
+ bgGlow: '#111c30',
+ bgElevated: '#0e1524',
+ textPrimary: '#f1f5f9',
+ accent: '#06b6d4',
+ accentSoft: '#22d3ee'
     },
     {
       id: 'emerald-obsidian',
-      name: 'Emerald & Obsidian',
-      bgBase: '#08100d',
-      bgGlow: '#0e2019',
-      bgElevated: '#0c1813',
-      textPrimary: '#f0fdf4',
-      accent: '#10b981',
-      accentSoft: '#34d399'
+ name: 'Emerald & Obsidian',
+ bgBase: '#08100d',
+ bgGlow: '#0e2019',
+ bgElevated: '#0c1813',
+ textPrimary: '#f0fdf4',
+ accent: '#10b981',
+ accentSoft: '#34d399'
     },
     {
       id: 'amber-espresso',
-      name: 'Amber & Espresso',
-      bgBase: '#120e0a',
-      bgGlow: '#241b12',
-      bgElevated: '#1a140e',
-      textPrimary: '#fefce8',
-      accent: '#d97706',
-      accentSoft: '#fbbf24'
+ name: 'Amber & Espresso',
+ bgBase: '#120e0a',
+ bgGlow: '#241b12',
+ bgElevated: '#1a140e',
+ textPrimary: '#fefce8',
+ accent: '#d97706',
+ accentSoft: '#fbbf24'
     }
   ];
 
   const DEFAULT_WATCHLIST_MOVIES = [
     {
       id: 'movie-seed-1',
-      title: 'Dune: Part Two',
-      actor: 'Timothée Chalamet, Zendaya',
-      posterUrl: '',
-      watched: false
+ title: 'Dune: Part Two',
+ actor: 'Timothée Chalamet, Zendaya',
+ posterUrl: '',
+ watched: false
     },
     {
       id: 'movie-seed-2',
-      title: 'Blade Runner 2049',
-      actor: 'Ryan Gosling, Ana de Armas',
-      posterUrl: '',
-      watched: false
+ title: 'Blade Runner 2049',
+ actor: 'Ryan Gosling, Ana de Armas',
+ posterUrl: '',
+ watched: false
     },
     {
       id: 'movie-seed-3',
-      title: 'Past Lives',
-      actor: 'Greta Lee, Teo Yoo',
-      posterUrl: '',
-      watched: true
+ title: 'Past Lives',
+ actor: 'Greta Lee, Teo Yoo',
+ posterUrl: '',
+ watched: true
     }
   ];
 
@@ -216,44 +218,10 @@
   ];
 
   const MAX_TOTAL_SHORTCUTS = 15; // Clean grid limit leaving 1 slot for "+ Add" tile
-  const SAFE_IMAGE_DATA_URL_RE = /^data:image\/[a-zA-Z0-9+.-]+;base64,[a-zA-Z0-9+/=]+$/;
 
   /* ==========================================================================
-     3. Helper Utilities & URL Sanitization
-     ========================================================================== */
-
-  function isValidHttpUrl(rawUrl, allowImplicitHttps = false) {
-    if (!rawUrl || typeof rawUrl !== 'string') return false;
-    const trimmed = rawUrl.trim();
-    if (!trimmed) return false;
-    try {
-      const candidate = allowImplicitHttps && !/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(trimmed)
-        ? `https://${trimmed}`
-        : trimmed;
-      const parsed = new URL(candidate);
-      return (parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname.length > 0;
-    } catch {
-      return false;
-    }
-  }
-
-  function toSafeHttpUrl(rawUrl, fallback = '#') {
-    if (!rawUrl || typeof rawUrl !== 'string') return fallback;
-    const trimmed = rawUrl.trim();
-    if (!trimmed) return fallback;
-    const candidate = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(trimmed) ? trimmed : `https://${trimmed}`;
-    try {
-      const parsed = new URL(candidate);
-      if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname.length > 0) {
-        return parsed.href;
-      }
-    } catch {}
-    return fallback;
-  }
-
-  function isSafeDataImageUrl(value) {
-    return typeof value === 'string' && SAFE_IMAGE_DATA_URL_RE.test(value);
-  }
+   * 3. Helper Utilities
+   * ========================================================================== */
 
   function normalizeUrl(rawUrl) {
     if (!rawUrl) return '';
@@ -315,8 +283,8 @@
   }
 
   /* ==========================================================================
-     4. Signature Overlapping Rainmeter-Style Clock
-     ========================================================================== */
+   * 4. Signature Overlapping Rainmeter-Style Clock
+   * ========================================================================== */
 
   class ClockController {
     constructor() {
@@ -326,12 +294,12 @@
 
       this.dayNames = [
         'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-        'Thursday', 'Friday', 'Saturday'
+ 'Thursday', 'Friday', 'Saturday'
       ];
 
       this.monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
+ 'July', 'August', 'September', 'October', 'November', 'December'
       ];
 
       this.init();
@@ -366,26 +334,97 @@
   }
 
   /* ==========================================================================
-     5. Minimalist DuckDuckGo Search Bar
-     ========================================================================== */
+   * 5. Minimalist Multi-Engine Search Bar
+   * ========================================================================== */
+
+  const SEARCH_ENGINES = [
+    {
+      id: 'ddg',
+ name: 'DuckDuckGo',
+ bang: '!ddg',
+ placeholder: 'Search DuckDuckGo or enter URL...',
+ buildUrl: (q) => `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.8 6.5c-.8-.4-1.8-.5-2.7-.2-1.1.4-1.8 1.5-2 2.7-.1.6 0 1.2.3 1.8-.6-.1-1.2 0-1.7.2-.8.4-1.4 1.2-1.5 2.1-.1 1 .4 2 1.2 2.6 1 .6 2.2.1 2.9-.7.1-.1.3-.3.4-.4.4.5.9.8 1.5.8 1 0 1.9-.5 2.3-1.3.5-.8.5-1.9.2-2.7l-.1-.3c.7-.6 1.2-1.5 1.2-2.6 0-1-.8-1.9-1.7-2.1l-.2.1z"/></svg>`
+    },
+    {
+      id: 'google',
+ name: 'Google',
+ bang: '!g',
+ placeholder: 'Search Google or enter URL...',
+ buildUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21.35 11.1h-9.18v2.98h5.27c-.23 1.22-.92 2.26-1.96 2.95v2.45h3.17c1.86-1.71 2.93-4.23 2.93-7.21 0-.69-.06-1.36-.23-1.17z"/><path d="M12.17 21c2.65 0 4.87-.88 6.49-2.38l-3.17-2.45c-.88.59-2.01.94-3.32.94-2.55 0-4.71-1.72-5.48-4.04H3.41v2.53C5.02 18.8 8.34 21 12.17 21z"/><path d="M6.69 13.07c-.2-.59-.31-1.22-.31-1.87s.11-1.28.31-1.87V6.8H3.41A9.81 9.81 0 0 0 2.35 11.2c0 1.58.38 3.08 1.06 4.4l3.28-2.53z"/><path d="M12.17 5.29c1.44 0 2.73.5 3.75 1.47l2.81-2.81C17.03 2.37 14.82 1.4 12.17 1.4 8.34 1.4 5.02 3.6 3.41 6.8l3.28 2.53c.77-2.32 2.93-4.04 5.48-4.04z"/></svg>`
+    },
+    {
+      id: 'brave',
+ name: 'Brave Search',
+ bang: '!br',
+ placeholder: 'Search Brave or enter URL...',
+ buildUrl: (q) => `https://search.brave.com/search?q=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/><path d="M9 10l3 2 3-2"/><path d="M12 12v4"/></svg>`
+    },
+    {
+      id: 'perplexity',
+ name: 'Perplexity',
+ bang: '!px',
+ placeholder: 'Ask Perplexity or enter URL...',
+ buildUrl: (q) => `https://www.perplexity.ai/search?q=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M4.93 4.93l14.14 14.14"/><path d="M19.07 4.93L4.93 19.07"/><rect x="6" y="6" width="12" height="12" rx="1"/></svg>`
+    },
+    {
+      id: 'startpage',
+ name: 'Startpage',
+ bang: '!sp',
+ placeholder: 'Search Startpage or enter URL...',
+ buildUrl: (q) => `https://www.startpage.com/sp/search?query=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.2" y2="16.2"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>`
+    },
+    {
+      id: 'youtube',
+ name: 'YouTube',
+ bang: '!yt',
+ placeholder: 'Search YouTube or enter URL...',
+ buildUrl: (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`,
+ iconSvg: `<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M23 7s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.4-1C16.4 3.5 12 3.5 12 3.5s-4.4 0-7.7.2c-.5.1-1.5.1-2.4 1C1.2 5.4 1 7 1 7S.8 8.9.8 10.8v1.8c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2.1.9 2.6 1 1.9.2 7.5.2 7.5.2s4.4 0 7.7-.2c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8v-1.8C23.2 8.9 23 7 23 7zM9.8 14.8V8.4l6.2 3.2-6.2 3.2z"/></svg>`
+    }
+  ];
 
   const SEARCH_BANGS = {
-    ytm: {
-      label: 'YTM',
-      buildUrl: (q) => `https://music.youtube.com/search?q=${encodeURIComponent(q)}`
+    ddg: {
+      label: 'DuckDuckGo',
+ buildUrl: (q) => `https://duckduckgo.com/?q=${encodeURIComponent(q)}`
     },
-    gh: {
-      label: 'GitHub',
-      buildUrl: (q) => `https://github.com/search?q=${encodeURIComponent(q)}`
-    },
-    mdn: {
-      label: 'MDN',
-      buildUrl: (q) => `https://developer.mozilla.org/en-US/search?q=${encodeURIComponent(q)}`
-    },
-    g: {
-      label: 'Google',
-      buildUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
-    }
+ g: {
+   label: 'Google',
+ buildUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`
+ },
+ br: {
+   label: 'Brave',
+ buildUrl: (q) => `https://search.brave.com/search?q=${encodeURIComponent(q)}`
+ },
+ px: {
+   label: 'Perplexity',
+ buildUrl: (q) => `https://www.perplexity.ai/search?q=${encodeURIComponent(q)}`
+ },
+ sp: {
+   label: 'Startpage',
+ buildUrl: (q) => `https://www.startpage.com/sp/search?query=${encodeURIComponent(q)}`
+ },
+ yt: {
+   label: 'YouTube',
+ buildUrl: (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`
+ },
+ ytm: {
+   label: 'YTM',
+ buildUrl: (q) => `https://music.youtube.com/search?q=${encodeURIComponent(q)}`
+ },
+ gh: {
+   label: 'GitHub',
+ buildUrl: (q) => `https://github.com/search?q=${encodeURIComponent(q)}`
+ },
+ mdn: {
+   label: 'MDN',
+ buildUrl: (q) => `https://developer.mozilla.org/en-US/search?q=${encodeURIComponent(q)}`
+ }
   };
 
   class SearchController {
@@ -394,31 +433,141 @@
       this.input = document.getElementById('searchInput');
       this.submitBtn = document.getElementById('searchSubmitBtn');
       this.engineBadge = document.getElementById('searchEngineBadge');
+      this.selectorWrap = document.getElementById('searchEngineSelector');
+      this.engineTrigger = document.getElementById('searchEngineTrigger');
+      this.engineMenu = document.getElementById('searchEngineMenu');
 
+      this.activeEngineId = SEARCH_ENGINES[0].id;
       this.init();
     }
 
-    init() {
+    async init() {
       if (!this.form || !this.input) return;
 
+      this.renderEngineMenu();
       this.bindEvents();
+      await this.loadSelectedEngine();
 
       requestAnimationFrame(() => {
         this.input.focus();
       });
     }
 
+    getActiveEngine() {
+      return SEARCH_ENGINES.find((e) => e.id === this.activeEngineId) || SEARCH_ENGINES[0];
+    }
+
+    async loadSelectedEngine() {
+      try {
+        const stored = await extensionApi.storage.local.get(STORAGE_KEYS.SEARCH_ENGINE);
+        const savedId = stored?.[STORAGE_KEYS.SEARCH_ENGINE];
+        if (savedId && SEARCH_ENGINES.some((e) => e.id === savedId)) {
+          this.activeEngineId = savedId;
+        }
+      } catch {}
+      this.applySelectedEngine(false);
+    }
+
+    async setSelectedEngine(engineId) {
+      if (!SEARCH_ENGINES.some((e) => e.id === engineId)) return;
+      this.activeEngineId = engineId;
+      this.applySelectedEngine(true);
+      try {
+        await extensionApi.storage.local.set({
+          [STORAGE_KEYS.SEARCH_ENGINE]: this.activeEngineId
+        });
+      } catch (err) {
+        console.error('Error saving search engine:', err);
+      }
+    }
+
+    applySelectedEngine(announce = false) {
+      const engine = this.getActiveEngine();
+
+      if (this.engineTrigger) {
+        this.engineTrigger.title = `Search Engine: ${engine.name} (click to switch)`;
+        this.engineTrigger.setAttribute('aria-label', `Search Engine: ${engine.name}`);
+        this.engineTrigger.innerHTML = `${engine.iconSvg}<svg class="search-engine-chevron" viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+      }
+
+      if (this.input) {
+        this.input.placeholder = engine.placeholder;
+      }
+
+      if (this.engineMenu) {
+        const options = this.engineMenu.querySelectorAll('.search-engine-option');
+        options.forEach((btn) => {
+          const isSelected = btn.dataset.engineId === engine.id;
+          btn.classList.toggle('active', isSelected);
+          btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        });
+      }
+
+      if (announce) {
+        showToast(`Search engine: ${engine.name}`);
+      }
+    }
+
+    renderEngineMenu() {
+      if (!this.engineMenu) return;
+      this.engineMenu.textContent = '';
+
+      SEARCH_ENGINES.forEach((engine) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'search-engine-option';
+        btn.dataset.engineId = engine.id;
+        btn.setAttribute('role', 'option');
+        btn.setAttribute('aria-selected', 'false');
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'search-engine-option-icon';
+        iconSpan.innerHTML = engine.iconSvg;
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'search-engine-option-name';
+        nameSpan.textContent = engine.name;
+
+        const bangSpan = document.createElement('span');
+        bangSpan.className = 'search-engine-option-bang';
+        bangSpan.textContent = engine.bang;
+
+        btn.appendChild(iconSpan);
+        btn.appendChild(nameSpan);
+        btn.appendChild(bangSpan);
+
+        btn.addEventListener('click', async () => {
+          await this.setSelectedEngine(engine.id);
+          this.toggleMenu(false);
+          if (this.input) this.input.focus();
+        });
+
+          this.engineMenu.appendChild(btn);
+      });
+    }
+
+    toggleMenu(forceState) {
+      if (!this.engineMenu || !this.engineTrigger) return;
+      const shouldOpen = typeof forceState === 'boolean'
+      ? forceState
+      : !this.engineMenu.classList.contains('open');
+
+      this.engineMenu.classList.toggle('open', shouldOpen);
+      this.engineMenu.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+      this.engineTrigger.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+    }
+
     parseBang(rawValue) {
-      const match = String(rawValue || '').match(/^!(ytm|gh|mdn|g)\s+(.*)$/i);
+      const match = String(rawValue || '').match(/^!(ddg|g|br|px|sp|yt|ytm|gh|mdn)\s+(.*)$/i);
       if (!match) return null;
       const key = match[1].toLowerCase();
       const engine = SEARCH_BANGS[key];
       if (!engine) return null;
       return {
         key,
-        label: engine.label,
-        buildUrl: engine.buildUrl,
-        cleanQuery: match[2].trim()
+ label: engine.label,
+ buildUrl: engine.buildUrl,
+ cleanQuery: match[2].trim()
       };
     }
 
@@ -435,6 +584,19 @@
     }
 
     bindEvents() {
+      if (this.engineTrigger) {
+        this.engineTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.toggleMenu();
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (this.selectorWrap && !this.selectorWrap.contains(e.target)) {
+          this.toggleMenu(false);
+        }
+      });
+
       this.input.addEventListener('input', () => {
         const hasText = this.input.value.trim().length > 0;
         if (hasText) {
@@ -451,10 +613,16 @@
       });
 
       window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && document.activeElement === this.input) {
-          this.input.value = '';
-          this.submitBtn.classList.remove('active');
-          this.updateEngineBadge();
+        if (e.key === 'Escape') {
+          if (this.engineMenu && this.engineMenu.classList.contains('open')) {
+            this.toggleMenu(false);
+            return;
+          }
+          if (document.activeElement === this.input) {
+            this.input.value = '';
+            this.submitBtn.classList.remove('active');
+            this.updateEngineBadge();
+          }
         }
       });
     }
@@ -463,7 +631,7 @@
       const query = rawQuery.trim();
       if (!query || query.includes(' ')) return false;
 
-      if (/^https?:\/\//i.test(query)) {
+      if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(query)) {
         return true;
       }
 
@@ -476,7 +644,7 @@
 
     resolveDestinationUrl(rawQuery) {
       const query = rawQuery.trim();
-      if (/^https?:\/\//i.test(query)) {
+      if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(query)) {
         return query;
       }
       if (/^localhost(:\d+)?(\/.*)?$/i.test(query)) {
@@ -499,15 +667,15 @@
       if (this.isDirectUrl(query)) {
         window.location.href = this.resolveDestinationUrl(query);
       } else {
-        const ddgUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-        window.location.href = ddgUrl;
+        const engine = this.getActiveEngine();
+        window.location.href = engine.buildUrl(query);
       }
     }
   }
 
   /* ==========================================================================
-     6. Clean Borderless Shortcut Grid Controller
-     ========================================================================== */
+   * 6. Clean Borderless Shortcut Grid Controller
+   * ========================================================================== */
 
   class ShortcutsController {
     constructor() {
@@ -531,9 +699,7 @@
         ]);
 
         if (stored && Array.isArray(stored[STORAGE_KEYS.PINNED_SHORTCUTS])) {
-          this.pinnedShortcuts = stored[STORAGE_KEYS.PINNED_SHORTCUTS].filter(
-            (item) => item && typeof item === 'object' && isValidHttpUrl(item.url, true)
-          );
+          this.pinnedShortcuts = stored[STORAGE_KEYS.PINNED_SHORTCUTS];
         } else {
           this.pinnedShortcuts = [...DEFAULT_PINNED_SHORTCUTS];
           await this.savePinnedShortcuts();
@@ -591,10 +757,10 @@
           });
           if (Array.isArray(historyItems)) {
             for (const item of historyItems) {
-              if (item.url && isValidHttpUrl(item.url, false)) {
+              if (item.url && !item.url.startsWith('about:') && !item.url.startsWith('chrome:')) {
                 candidates.push({
                   title: item.title || getDisplayDomain(item.url),
-                  url: item.url
+                                url: item.url
                 });
               }
             }
@@ -612,13 +778,11 @@
       const seenUrls = new Set();
 
       for (const item of this.pinnedShortcuts) {
-        if (!isValidHttpUrl(item.url, true)) continue;
         const norm = normalizeUrl(item.url);
         if (!seenUrls.has(norm)) {
           seenUrls.add(norm);
           combined.push({
             ...item,
-            url: toSafeHttpUrl(item.url),
             isPinned: true
           });
         }
@@ -630,16 +794,16 @@
 
         for (const item of recentCandidates) {
           if (combined.length >= MAX_TOTAL_SHORTCUTS) break;
-          if (!item.url || !isValidHttpUrl(item.url, false)) continue;
+          if (!item.url) continue;
 
           const norm = normalizeUrl(item.url);
           if (!seenUrls.has(norm) && !this.hiddenUrls.has(norm)) {
             seenUrls.add(norm);
             combined.push({
               id: `recent-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
-              title: (item.title || getDisplayDomain(item.url)).trim(),
-              url: toSafeHttpUrl(item.url),
-              isPinned: false
+                          title: (item.title || getDisplayDomain(item.url)).trim(),
+                          url: item.url,
+                          isPinned: false
             });
           }
         }
@@ -664,12 +828,11 @@
     }
 
     createShortcutTile(item) {
-      const safeUrl = toSafeHttpUrl(item.url);
       const tile = document.createElement('a');
       tile.className = 'shortcut-tile';
-      tile.href = safeUrl;
+      tile.href = item.url;
       tile.setAttribute('role', 'listitem');
-      tile.setAttribute('title', `${item.title} (${safeUrl})`);
+      tile.setAttribute('title', `${item.title} (${item.url})`);
 
       const iconBox = document.createElement('div');
       iconBox.className = 'tile-icon-box';
@@ -691,9 +854,9 @@
       pinBtn.setAttribute('aria-label', pinBtn.title);
 
       pinBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="9" height="9" fill="${item.isPinned ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2">
-          <path d="M16 4l4 4-2.5 2.5 1.5 6-4-4L9 14.5l-4.5 4.5L3 17.5 7.5 13 6 7l6-4 2 2z"/>
-        </svg>
+      <svg viewBox="0 0 24 24" width="9" height="9" fill="${item.isPinned ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2">
+      <path d="M16 4l4 4-2.5 2.5 1.5 6-4-4L9 14.5l-4.5 4.5L3 17.5 7.5 13 6 7l6-4 2 2z"/>
+      </svg>
       `;
 
       pinBtn.addEventListener('click', (e) => {
@@ -709,10 +872,10 @@
       removeBtn.setAttribute('aria-label', removeBtn.title);
 
       removeBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+      <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
       `;
 
       removeBtn.addEventListener('click', (e) => {
@@ -729,11 +892,11 @@
       faviconImg.className = 'tile-favicon';
       faviconImg.alt = '';
       faviconImg.loading = 'lazy';
-      faviconImg.src = getFaviconUrl(safeUrl);
+      faviconImg.src = getFaviconUrl(item.url);
 
       const monogramFallback = document.createElement('span');
       monogramFallback.className = 'tile-avatar';
-      monogramFallback.textContent = getMonogram(item.title, safeUrl);
+      monogramFallback.textContent = getMonogram(item.title, item.url);
       monogramFallback.style.display = 'none';
 
       faviconImg.addEventListener('error', () => {
@@ -747,7 +910,7 @@
 
       const label = document.createElement('span');
       label.className = 'tile-label';
-      label.textContent = item.title || getDisplayDomain(safeUrl);
+      label.textContent = item.title || getDisplayDomain(item.url);
       tile.appendChild(label);
 
       return tile;
@@ -763,10 +926,10 @@
       const iconBox = document.createElement('div');
       iconBox.className = 'tile-add-icon';
       iconBox.innerHTML = `
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
       `;
 
       const label = document.createElement('span');
@@ -793,9 +956,9 @@
       } else {
         this.pinnedShortcuts.push({
           id: `pin-${Date.now()}`,
-          title: item.title,
-          url: toSafeHttpUrl(item.url),
-          isPinned: true
+                                  title: item.title,
+                                  url: item.url,
+                                  isPinned: true
         });
         await this.savePinnedShortcuts();
         showToast(`Pinned "${item.title}"`);
@@ -821,18 +984,17 @@
     }
 
     async addCustomShortcut(title, rawUrl) {
-      const finalUrl = toSafeHttpUrl(rawUrl, '');
-      if (!finalUrl) {
-        showToast('Invalid URL scheme (use http or https)');
-        return;
+      let finalUrl = rawUrl.trim();
+      if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(finalUrl)) {
+        finalUrl = `https://${finalUrl}`;
       }
 
       const newShortcut = {
         id: `pin-${Date.now()}`,
-        title: title.trim() || getDisplayDomain(finalUrl),
-        url: finalUrl,
-        isPinned: true,
-        isCustom: true
+ title: title.trim() || getDisplayDomain(finalUrl),
+ url: finalUrl,
+ isPinned: true,
+ isCustom: true
       };
 
       this.pinnedShortcuts.push(newShortcut);
@@ -844,8 +1006,8 @@
   }
 
   /* ==========================================================================
-     7. Minimalist Modal Dialog Controller
-     ========================================================================== */
+   * 7. Minimalist Modal Dialog Controller
+   * ========================================================================== */
 
   class ModalController {
     constructor() {
@@ -870,18 +1032,18 @@
         if (e.target === this.overlay) this.close();
       });
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-          this.close();
-        }
-      });
-
-      if (this.form) {
-        this.form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          this.handleSubmit();
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+            this.close();
+          }
         });
-      }
+
+        if (this.form) {
+          this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+          });
+        }
     }
 
     open() {
@@ -928,8 +1090,19 @@
         return;
       }
 
-      if (!isValidHttpUrl(rawUrl, true)) {
-        this.showError('Please enter a valid http/https URL (e.g. github.com).');
+      let valid = false;
+      try {
+        const testUrl = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+        const parsed = new URL(testUrl);
+        if (parsed.hostname.length > 0) {
+          valid = true;
+        }
+      } catch {
+        valid = false;
+      }
+
+      if (!valid) {
+        this.showError('Please enter a valid URL (e.g. github.com).');
         this.urlInput.focus();
         return;
       }
@@ -940,8 +1113,8 @@
   }
 
   /* ==========================================================================
-     8. YouTube Music Playlists Controller
-     ========================================================================== */
+   * 8. YouTube Music Playlists Controller
+   * ========================================================================== */
 
   class PlaylistsController {
     constructor() {
@@ -960,9 +1133,7 @@
       try {
         const stored = await extensionApi.storage.local.get(STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS);
         if (stored && Array.isArray(stored[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS])) {
-          this.playlists = stored[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS].filter(
-            (p) => p && typeof p === 'object' && isValidHttpUrl(p.url, true)
-          );
+          this.playlists = stored[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS];
         } else {
           this.playlists = DEFAULT_YTM_PLAYLISTS.map((p) => ({ ...p }));
           await this.savePlaylists();
@@ -984,22 +1155,12 @@
     }
 
     async addPlaylist({ title, url, cover }) {
-      const cleanUrl = toSafeHttpUrl(url, '');
-      if (!cleanUrl) {
-        showToast('Invalid playlist URL');
-        return;
-      }
-
-      const trimmedCover = (cover || '').trim();
-      const safeCover = (isSafeDataImageUrl(trimmedCover) || isValidHttpUrl(trimmedCover, false) || /^assets\/[a-zA-Z0-9_./-]+$/.test(trimmedCover))
-        ? trimmedCover
-        : '';
-
+      const cleanUrl = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url) ? url : `https://${url}`;
       const newPlaylist = {
         id: `ytm-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        title: title.trim() || 'Untitled Playlist',
-        url: cleanUrl,
-        cover: safeCover
+ title: title.trim() || 'Untitled Playlist',
+ url: cleanUrl,
+ cover: (cover || '').trim()
       };
 
       this.playlists.push(newPlaylist);
@@ -1064,7 +1225,7 @@
     createPlaylistPill(playlist) {
       const pill = document.createElement('a');
       pill.className = 'playlist-pill';
-      pill.href = toSafeHttpUrl(playlist.url, '#');
+      pill.href = playlist.url || '#';
       pill.setAttribute('role', 'listitem');
       pill.setAttribute('title', `${playlist.title || 'Playlist'} (YouTube Music)`);
 
@@ -1212,25 +1373,25 @@
         if (e.target === this.overlay) this.close();
       });
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
-          this.close();
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.overlay.classList.contains('open')) {
+            this.close();
+          }
+        });
+
+        if (this.coverFileInput) {
+          this.coverFileInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            this.handleFileSelection(file);
+          });
         }
-      });
 
-      if (this.coverFileInput) {
-        this.coverFileInput.addEventListener('change', (e) => {
-          const file = e.target.files && e.target.files[0];
-          this.handleFileSelection(file);
-        });
-      }
-
-      if (this.form) {
-        this.form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          this.handleSubmit();
-        });
-      }
+        if (this.form) {
+          this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+          });
+        }
     }
 
     open() {
@@ -1342,15 +1503,18 @@
         return;
       }
 
-      if (!isValidHttpUrl(rawUrl, true)) {
-        this.showError('Please enter a valid http/https playlist URL.');
-        if (this.urlInput) this.urlInput.focus();
-        return;
+      let validUrl = false;
+      try {
+        const testUrl = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+        const parsed = new URL(testUrl);
+        if (parsed.hostname.length > 0) validUrl = true;
+      } catch {
+        validUrl = false;
       }
 
-      if (coverUrl && !isValidHttpUrl(coverUrl, false)) {
-        this.showError('Cover image URL must start with http:// or https://.');
-        if (this.coverUrlInput) this.coverUrlInput.focus();
+      if (!validUrl) {
+        this.showError('Please enter a valid playlist URL.');
+        if (this.urlInput) this.urlInput.focus();
         return;
       }
 
@@ -1361,8 +1525,8 @@
   }
 
   /* ==========================================================================
-     9. Tab & Media Bridge Helpers
-     ========================================================================== */
+   * 9. Tab & Media Bridge Helpers
+   * ========================================================================== */
 
   function runtimeHasError() {
     return Boolean(typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.lastError);
@@ -1386,13 +1550,13 @@
     }
 
     const stripSuffix = (str) =>
-      str.replace(/(?:\s*[-|]\s*YouTube Music|\s*[-|]\s*YouTube)$/i, '').trim();
+    str.replace(/(?:\s*[-|]\s*YouTube Music|\s*[-|]\s*YouTube)$/i, '').trim();
 
     if (clean.includes(' • ')) {
       const parts = clean.split(' • ');
       return {
         title: parts[0].trim(),
-        artist: stripSuffix(parts.slice(1).join(' • '))
+ artist: stripSuffix(parts.slice(1).join(' • '))
       };
     }
 
@@ -1415,7 +1579,7 @@
 
   async function getOpenMediaTabs() {
     const tabsApi = (typeof browser !== 'undefined' && browser.tabs) ? browser.tabs :
-                    (typeof chrome !== 'undefined' && chrome.tabs ? chrome.tabs : null);
+    (typeof chrome !== 'undefined' && chrome.tabs ? chrome.tabs : null);
     if (!tabsApi || !tabsApi.query) return [];
 
     try {
@@ -1450,8 +1614,8 @@
   }
 
   /* ==========================================================================
-     10. Stabilized Live Mini-Player Controller (Zero-Flicker In-Place DOM)
-     ========================================================================== */
+   * 10. Stabilized Live Mini-Player Controller (Zero-Flicker In-Place DOM)
+   * ========================================================================== */
 
   class YtmMiniPlayerController {
     constructor() {
@@ -1468,16 +1632,16 @@
 
       this.progressState = {
         currentTime: 0,
-        duration: 0,
-        lastSyncAt: Date.now()
+ duration: 0,
+ lastSyncAt: Date.now()
       };
 
       this.currentState = {
         hasTrack: false,
-        isPlaying: false,
-        title: '',
-        artist: '',
-        albumArt: ''
+ isPlaying: false,
+ title: '',
+ artist: '',
+ albumArt: ''
       };
 
       this.init();
@@ -1487,7 +1651,7 @@
       if (!this.containerEl) return;
 
       const runtimeApi = (typeof browser !== 'undefined' && browser.runtime) ? browser.runtime :
-                         (typeof chrome !== 'undefined' && chrome.runtime ? chrome.runtime : null);
+      (typeof chrome !== 'undefined' && chrome.runtime ? chrome.runtime : null);
       if (runtimeApi && runtimeApi.onMessage) {
         runtimeApi.onMessage.addListener((message, sender) => {
           if (message?.type === 'YTM_STATE_CHANGED' && message.data) {
@@ -1507,7 +1671,7 @@
     async ensureBridgeInjected(tabId, force = false) {
       if (!tabId || (!force && this.injectedTabs.has(tabId))) return;
       const scriptingApi = (typeof browser !== 'undefined' && browser.scripting) ? browser.scripting :
-                           (typeof chrome !== 'undefined' && chrome.scripting ? chrome.scripting : null);
+      (typeof chrome !== 'undefined' && chrome.scripting ? chrome.scripting : null);
       if (scriptingApi && scriptingApi.executeScript) {
         try {
           await scriptingApi.executeScript({ target: { tabId }, files: ['ytm-bridge.js'] });
@@ -1556,7 +1720,7 @@
     async executeDirectMediaFallback(tabId, actionType, ratio = 0) {
       if (!tabId) return null;
       const scriptingApi = (typeof browser !== 'undefined' && browser.scripting) ? browser.scripting :
-                           (typeof chrome !== 'undefined' && chrome.scripting ? chrome.scripting : null);
+      (typeof chrome !== 'undefined' && chrome.scripting ? chrome.scripting : null);
       if (!scriptingApi || !scriptingApi.executeScript) return null;
 
       try {
@@ -1565,30 +1729,30 @@
           args: [actionType, ratio],
           func: (action, seekRatio) => {
             const media =
-              Array.from(document.querySelectorAll('video, audio')).find((m) => m.currentSrc) ||
-              document.querySelector('video');
+            Array.from(document.querySelectorAll('video, audio')).find((m) => m.currentSrc) ||
+            document.querySelector('video');
 
             if (action === 'TOGGLE_PLAY') {
               const btn =
-                document.querySelector('ytmusic-player-bar #play-pause-button') ||
-                document.querySelector('#play-pause-button') ||
-                document.querySelector('.ytp-play-button') ||
-                document.querySelector('[data-testid="control-button-playpause"]');
+              document.querySelector('ytmusic-player-bar #play-pause-button') ||
+              document.querySelector('#play-pause-button') ||
+              document.querySelector('.ytp-play-button') ||
+              document.querySelector('[data-testid="control-button-playpause"]');
               if (btn) btn.click();
               else if (media) media.paused ? media.play().catch(() => {}) : media.pause();
             } else if (action === 'NEXT_TRACK') {
               const btn =
-                document.querySelector('ytmusic-player-bar .next-button') ||
-                document.querySelector('.next-button') ||
-                document.querySelector('.ytp-next-button') ||
-                document.querySelector('[data-testid="control-button-skip-forward"]');
+              document.querySelector('ytmusic-player-bar .next-button') ||
+              document.querySelector('.next-button') ||
+              document.querySelector('.ytp-next-button') ||
+              document.querySelector('[data-testid="control-button-skip-forward"]');
               if (btn) btn.click();
             } else if (action === 'PREV_TRACK') {
               const btn =
-                document.querySelector('ytmusic-player-bar .previous-button') ||
-                document.querySelector('.previous-button') ||
-                document.querySelector('.ytp-prev-button') ||
-                document.querySelector('[data-testid="control-button-skip-back"]');
+              document.querySelector('ytmusic-player-bar .previous-button') ||
+              document.querySelector('.previous-button') ||
+              document.querySelector('.ytp-prev-button') ||
+              document.querySelector('[data-testid="control-button-skip-back"]');
               if (btn) btn.click();
             } else if (action === 'SEEK_TO') {
               if (media && Number.isFinite(media.duration) && media.duration > 0) {
@@ -1598,7 +1762,7 @@
 
             return {
               currentTime: (media && Number.isFinite(media.currentTime)) ? media.currentTime : 0,
-              duration: (media && Number.isFinite(media.duration) && media.duration > 0) ? media.duration : 0
+                                                         duration: (media && Number.isFinite(media.duration) && media.duration > 0) ? media.duration : 0
             };
           }
         });
@@ -1632,11 +1796,11 @@
         this.applyState({
           hasTrack: true,
           isPlaying: Boolean(bridgeStatus.isPlaying),
-          title: bridgeStatus.title,
-          artist: bridgeStatus.artist || 'YouTube Music',
-          albumArt: bridgeStatus.albumArt || getThumbnailFromUrl(mediaTab.url),
-          currentTime: bridgeStatus.currentTime || 0,
-          duration: bridgeStatus.duration || 0
+                        title: bridgeStatus.title,
+                        artist: bridgeStatus.artist || 'YouTube Music',
+                        albumArt: bridgeStatus.albumArt || getThumbnailFromUrl(mediaTab.url),
+                        currentTime: bridgeStatus.currentTime || 0,
+                        duration: bridgeStatus.duration || 0
         });
         return;
       }
@@ -1646,9 +1810,9 @@
         this.applyState({
           hasTrack: true,
           isPlaying: Boolean(mediaTab.audible),
-          title: parsed.title,
-          artist: parsed.artist || 'YouTube Music',
-          albumArt: getThumbnailFromUrl(mediaTab.url)
+                        title: parsed.title,
+                        artist: parsed.artist || 'YouTube Music',
+                        albumArt: getThumbnailFromUrl(mediaTab.url)
         });
       } else {
         this.applyState({ hasTrack: false, isPlaying: false, title: '', artist: '', albumArt: '' });
@@ -1666,10 +1830,10 @@
 
       this.currentState = {
         hasTrack: Boolean(next.hasTrack),
-        isPlaying: Boolean(next.isPlaying),
-        title: next.title || '',
-        artist: next.artist || '',
-        albumArt: next.albumArt || ''
+ isPlaying: Boolean(next.isPlaying),
+ title: next.title || '',
+ artist: next.artist || '',
+ albumArt: next.albumArt || ''
       };
 
       if (!next.hasTrack) {
@@ -1829,8 +1993,8 @@
 
           const boosted = this.boostColorVibrancy(
             Math.round(sumR / count),
-            Math.round(sumG / count),
-            Math.round(sumB / count)
+                                                  Math.round(sumG / count),
+                                                  Math.round(sumB / count)
           );
           if (this.currentState.hasTrack && this.currentState.albumArt === artUrl) {
             this.applyDynamicGlow(boosted.r, boosted.g, boosted.b);
@@ -1842,20 +2006,14 @@
       probe.onerror = () => {
         this.clearDynamicGlow();
       };
-
-      // Cache-bust CORS probe so it doesn't collide with non-CORS cached responses from the visible <img>
-      if (artUrl.startsWith('data:')) {
-        probe.src = artUrl;
-      } else {
-        probe.src = artUrl.includes('?') ? `${artUrl}&cors=1` : `${artUrl}?cors=1`;
-      }
+      probe.src = artUrl;
     }
 
     async focusYtmTab() {
       const tabsApi = (typeof browser !== 'undefined' && browser.tabs) ? browser.tabs :
-                      (typeof chrome !== 'undefined' && chrome.tabs ? chrome.tabs : null);
+      (typeof chrome !== 'undefined' && chrome.tabs ? chrome.tabs : null);
       const windowsApi = (typeof browser !== 'undefined' && browser.windows) ? browser.windows :
-                         (typeof chrome !== 'undefined' && chrome.windows ? chrome.windows : null);
+      (typeof chrome !== 'undefined' && chrome.windows ? chrome.windows : null);
 
       if (this.currentTabId && tabsApi) {
         try {
@@ -1889,11 +2047,11 @@
         this.applyState({
           hasTrack: true,
           isPlaying: Boolean(updated.isPlaying),
-          title: updated.title,
-          artist: updated.artist || 'YouTube Music',
-          albumArt: updated.albumArt || this.currentState.albumArt,
-          currentTime: updated.currentTime || 0,
-          duration: updated.duration || 0
+                        title: updated.title,
+                        artist: updated.artist || 'YouTube Music',
+                        albumArt: updated.albumArt || this.currentState.albumArt,
+                        currentTime: updated.currentTime || 0,
+                        duration: updated.duration || 0
         });
       } else if (!updated) {
         await this.executeDirectMediaFallback(this.currentTabId, actionType);
@@ -2029,8 +2187,8 @@
 
       playPauseBtn.setAttribute('aria-label', state.isPlaying ? 'Pause' : 'Play');
       playPauseBtn.innerHTML = state.isPlaying
-        ? `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>`
-        : `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>`;
+      ? `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>`
+      : `<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>`;
     }
 
     renderIdleState(hasOpenTab) {
@@ -2065,8 +2223,8 @@
   }
 
   /* ==========================================================================
-     11. Theme Color Switcher Controller
-     ========================================================================== */
+   * 11. Theme Color Switcher Controller
+   * ========================================================================== */
 
   class ThemeController {
     constructor() {
@@ -2098,8 +2256,8 @@
       if (Number.isNaN(num)) return { r: 225, g: 29, b: 72 };
       return {
         r: (num >> 16) & 255,
-        g: (num >> 8) & 255,
-        b: num & 255
+ g: (num >> 8) & 255,
+ b: num & 255
       };
     }
 
@@ -2254,8 +2412,8 @@
     togglePopover(forceState) {
       if (!this.popoverEl || !this.triggerBtn) return;
       const shouldOpen = typeof forceState === 'boolean'
-        ? forceState
-        : !this.popoverEl.classList.contains('open');
+      ? forceState
+      : !this.popoverEl.classList.contains('open');
 
       this.popoverEl.classList.toggle('open', shouldOpen);
       this.popoverEl.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
@@ -2298,8 +2456,8 @@
   }
 
   /* ==========================================================================
-     12. List-Wise Movie Watchlist Controller
-     ========================================================================== */
+   * 12. List-Wise Movie Watchlist Controller (TMDB v3/v4 Powered)
+   * ========================================================================== */
 
   class WatchlistController {
     constructor() {
@@ -2323,6 +2481,7 @@
       this.listEl = document.getElementById('watchlistList');
 
       this.movies = [];
+      this.tmdbApiKey = '';
       this.activeTab = 'to-watch';
       this.searchDebounceTimer = null;
       this.searchRequestId = 0;
@@ -2331,9 +2490,183 @@
     }
 
     async init() {
+      this.injectApiKeyControls();
       this.bindEvents();
+      await this.loadApiKey();
       await this.loadMovies();
       this.render();
+    }
+
+    injectApiKeyControls() {
+      if (!this.addForm || !this.addForm.parentNode) return;
+      if (document.getElementById('tmdbKeyBar')) return;
+
+      const bar = document.createElement('div');
+      bar.id = 'tmdbKeyBar';
+      bar.style.cssText = [
+        'display: flex',
+ 'flex-direction: column',
+ 'gap: 6px',
+ 'padding: 8px 10px',
+ 'border-radius: 10px',
+ 'background: rgba(255, 255, 255, 0.04)',
+ 'border: 1px solid rgba(255, 255, 255, 0.08)',
+ 'font-size: 12px'
+      ].join(';');
+
+      const headerRow = document.createElement('div');
+      headerRow.style.cssText = 'display: flex; align-items: center; justify-content: space-between; gap: 8px;';
+
+      const statusLabel = document.createElement('span');
+      statusLabel.id = 'tmdbKeyStatus';
+      statusLabel.style.cssText = 'color: var(--text-muted, rgba(255,255,255,0.65)); font-weight: 500;';
+      statusLabel.textContent = 'TMDB API: Key required for search';
+
+      const toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.id = 'tmdbKeyToggleBtn';
+      toggleBtn.textContent = 'Set API Key';
+      toggleBtn.style.cssText = [
+        'background: transparent',
+ 'border: 1px solid rgba(255, 255, 255, 0.16)',
+ 'color: var(--accent-soft, #fb7185)',
+ 'border-radius: 6px',
+ 'padding: 2px 8px',
+ 'font-size: 11px',
+ 'cursor: pointer'
+      ].join(';');
+
+      headerRow.appendChild(statusLabel);
+      headerRow.appendChild(toggleBtn);
+      bar.appendChild(headerRow);
+
+      const inputRow = document.createElement('div');
+      inputRow.id = 'tmdbKeyInputRow';
+      inputRow.style.cssText = 'display: none; gap: 6px; align-items: center; margin-top: 2px;';
+
+      const keyInput = document.createElement('input');
+      keyInput.type = 'password';
+      keyInput.id = 'tmdbApiKeyInput';
+      keyInput.placeholder = 'Paste TMDB v3 API Key or Read Token';
+      keyInput.autocomplete = 'off';
+      keyInput.style.cssText = [
+        'flex: 1',
+ 'min-width: 0',
+ 'padding: 6px 8px',
+ 'border-radius: 6px',
+ 'border: 1px solid rgba(255, 255, 255, 0.14)',
+ 'background: rgba(0, 0, 0, 0.28)',
+ 'color: var(--text-primary, #fff)',
+ 'font-size: 12px'
+      ].join(';');
+
+      const saveBtn = document.createElement('button');
+      saveBtn.type = 'button';
+      saveBtn.textContent = 'Save';
+      saveBtn.style.cssText = [
+        'padding: 6px 10px',
+ 'border-radius: 6px',
+ 'border: none',
+ 'background: var(--accent, #e11d48)',
+ 'color: #fff',
+ 'font-size: 11px',
+ 'font-weight: 600',
+ 'cursor: pointer'
+      ].join(';');
+
+      inputRow.appendChild(keyInput);
+      inputRow.appendChild(saveBtn);
+      bar.appendChild(inputRow);
+
+      toggleBtn.addEventListener('click', () => {
+        const isOpen = inputRow.style.display === 'flex';
+        inputRow.style.display = isOpen ? 'none' : 'flex';
+        if (!isOpen) {
+          keyInput.value = this.tmdbApiKey;
+          keyInput.focus();
+        }
+      });
+
+      const commitKey = async () => {
+        await this.saveApiKey(keyInput.value.trim());
+        inputRow.style.display = 'none';
+      };
+
+      saveBtn.addEventListener('click', commitKey);
+      keyInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          commitKey();
+        }
+      });
+
+      this.tmdbStatusEl = statusLabel;
+      this.tmdbToggleBtn = toggleBtn;
+      this.tmdbInputRow = inputRow;
+      this.tmdbKeyInput = keyInput;
+
+      this.addForm.parentNode.insertBefore(bar, this.addForm);
+    }
+
+    updateApiKeyUI() {
+      if (!this.tmdbStatusEl || !this.tmdbToggleBtn) return;
+      if (this.tmdbApiKey) {
+        const masked = `••••${this.tmdbApiKey.slice(-4)}`;
+        this.tmdbStatusEl.textContent = `TMDB API: Connected (${masked})`;
+        this.tmdbStatusEl.style.color = 'var(--text-primary, #fff)';
+        this.tmdbToggleBtn.textContent = 'Change Key';
+      } else {
+        this.tmdbStatusEl.textContent = 'TMDB API: Key required for search';
+        this.tmdbStatusEl.style.color = 'var(--text-muted, rgba(255,255,255,0.65))';
+        this.tmdbToggleBtn.textContent = 'Set API Key';
+      }
+    }
+
+    async loadApiKey() {
+      try {
+        const stored = await extensionApi.storage.local.get(STORAGE_KEYS.TMDB_API_KEY);
+        this.tmdbApiKey = typeof stored?.[STORAGE_KEYS.TMDB_API_KEY] === 'string'
+        ? stored[STORAGE_KEYS.TMDB_API_KEY].trim()
+        : '';
+      } catch {
+        this.tmdbApiKey = '';
+      }
+      this.updateApiKeyUI();
+    }
+
+    async saveApiKey(rawKey) {
+      this.tmdbApiKey = (rawKey || '').trim();
+      try {
+        await extensionApi.storage.local.set({
+          [STORAGE_KEYS.TMDB_API_KEY]: this.tmdbApiKey
+        });
+        this.updateApiKeyUI();
+        this.clearLookupHint();
+        showToast(this.tmdbApiKey ? 'TMDB API key saved' : 'TMDB API key cleared');
+      } catch (err) {
+        console.error('Error saving TMDB API key:', err);
+        showToast('Could not save TMDB API key');
+      }
+    }
+
+    buildTmdbRequest(path, params = {}) {
+      const url = new URL(`https://api.themoviedb.org/3${path}`);
+      Object.entries(params).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') {
+          url.searchParams.set(k, String(v));
+        }
+      });
+
+      const headers = { Accept: 'application/json' };
+      const token = this.tmdbApiKey.trim();
+
+      if (token.startsWith('eyJ') || token.length > 40) {
+        headers.Authorization = `Bearer ${token}`;
+      } else {
+        url.searchParams.set('api_key', token);
+      }
+
+      return { url: url.toString(), headers };
     }
 
     async loadMovies() {
@@ -2370,7 +2703,12 @@
       if (this.triggerBtn) this.triggerBtn.setAttribute('aria-expanded', 'true');
 
       setTimeout(() => {
-        if (this.titleInput) this.titleInput.focus();
+        if (!this.tmdbApiKey && this.tmdbInputRow && this.tmdbKeyInput) {
+          this.tmdbInputRow.style.display = 'flex';
+          this.tmdbKeyInput.focus();
+        } else if (this.titleInput) {
+          this.titleInput.focus();
+        }
       }, 60);
     }
 
@@ -2432,12 +2770,12 @@
 
       const lines = [
         ['7', '4', '7', '20'],
-        ['17', '4', '17', '20'],
-        ['2', '12', '22', '12'],
-        ['2', '8', '7', '8'],
-        ['2', '16', '7', '16'],
-        ['17', '8', '22', '8'],
-        ['17', '16', '22', '16']
+ ['17', '4', '17', '20'],
+ ['2', '12', '22', '12'],
+ ['2', '8', '7', '8'],
+ ['2', '16', '7', '16'],
+ ['17', '8', '22', '8'],
+ ['17', '16', '22', '16']
       ];
       lines.forEach(([x1, y1, x2, y2]) => {
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -2483,7 +2821,7 @@
       fallback.appendChild(this.createFilmReelSvg());
 
       const safePosterUrl = (movie.posterUrl || '').trim();
-      if (safePosterUrl && isValidHttpUrl(safePosterUrl, false)) {
+      if (safePosterUrl && /^https?:\/\//i.test(safePosterUrl)) {
         const img = document.createElement('img');
         img.className = 'watchlist-poster-img';
         img.alt = `${movie.title} poster`;
@@ -2544,15 +2882,15 @@
       this.listEl.textContent = '';
 
       const filtered = this.movies.filter((m) =>
-        this.activeTab === 'watched' ? Boolean(m.watched) : !m.watched
+      this.activeTab === 'watched' ? Boolean(m.watched) : !m.watched
       );
 
       if (filtered.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'watchlist-empty';
         empty.textContent = this.activeTab === 'watched'
-          ? 'No watched movies yet.'
-          : 'Your To Watch list is empty.';
+        ? 'No watched movies yet.'
+        : 'Your To Watch list is empty.';
         this.listEl.appendChild(empty);
         return;
       }
@@ -2568,14 +2906,14 @@
 
       const actor = this.actorInput ? this.actorInput.value.trim() : '';
       const rawPosterUrl = this.posterInput ? this.posterInput.value.trim() : '';
-      const posterUrl = isValidHttpUrl(rawPosterUrl, false) ? rawPosterUrl : '';
+      const posterUrl = /^https?:\/\//i.test(rawPosterUrl) ? rawPosterUrl : '';
 
       const newMovie = {
         id: `movie-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-        title,
-        actor,
-        posterUrl,
-        watched: false
+ title,
+ actor,
+ posterUrl,
+ watched: false
       };
 
       this.movies.unshift(newMovie);
@@ -2630,24 +2968,62 @@
         return;
       }
 
+      if (!this.tmdbApiKey) {
+        this.hideSuggestions();
+        this.setLookupHint('Click "Set API Key" above to enable TMDB search, or enter details manually.');
+        return;
+      }
+
       const requestId = ++this.searchRequestId;
       this.clearLookupHint();
-      this.showSuggestionsStatus('Searching movies...');
+      this.showSuggestionsStatus('Searching TMDB...');
 
       try {
-        const endpoint = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=movie&entity=movie&limit=5`;
-        const response = await fetch(endpoint);
+        const req = this.buildTmdbRequest('/search/movie', {
+          query,
+          include_adult: 'false',
+          language: 'en-US',
+          page: 1
+        });
+        const response = await fetch(req.url, { headers: req.headers });
+        if (response.status === 401) {
+          if (requestId !== this.searchRequestId) return;
+          this.hideSuggestions();
+          this.setLookupHint('Invalid TMDB API key — click "Change Key" above to update it.');
+          return;
+        }
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const payload = await response.json();
 
         if (requestId !== this.searchRequestId) return;
 
-        const results = Array.isArray(payload.results) ? payload.results.slice(0, 5) : [];
+        const results = Array.isArray(payload.results) ? payload.results.slice(0, 6) : [];
         this.renderSuggestions(results);
       } catch {
         if (requestId !== this.searchRequestId) return;
         this.hideSuggestions();
-        this.setLookupHint('Offline or lookup unavailable — enter details manually.');
+        this.setLookupHint('Offline or TMDB unavailable — enter details manually.');
+      }
+    }
+
+    async fetchMovieCast(movieId) {
+      if (!movieId || !this.tmdbApiKey) return '';
+      try {
+        const req = this.buildTmdbRequest(`/movie/${encodeURIComponent(movieId)}`, {
+          append_to_response: 'credits',
+          language: 'en-US'
+        });
+        const response = await fetch(req.url, { headers: req.headers });
+        if (!response.ok) return '';
+        const data = await response.json();
+        const cast = Array.isArray(data?.credits?.cast) ? data.credits.cast : [];
+        return cast
+        .slice(0, 3)
+        .map((person) => person.name)
+        .filter(Boolean)
+        .join(', ');
+      } catch {
+        return '';
       }
     }
 
@@ -2657,7 +3033,7 @@
 
       if (!results || results.length === 0) {
         this.hideSuggestions();
-        this.setLookupHint('No matching movies found — enter details manually.');
+        this.setLookupHint('No matching TMDB movies found — enter details manually.');
         return;
       }
 
@@ -2667,11 +3043,11 @@
         btn.className = 'movie-suggestion-item';
         btn.setAttribute('role', 'option');
 
-        const posterUrl100 = item.artworkUrl100 || '';
-        if (posterUrl100 && isValidHttpUrl(posterUrl100, false)) {
+        const posterPath = typeof item.poster_path === 'string' ? item.poster_path : '';
+        if (posterPath.startsWith('/')) {
           const img = document.createElement('img');
           img.className = 'movie-suggestion-poster';
-          img.src = posterUrl100;
+          img.src = `https://image.tmdb.org/t/p/w185${posterPath}`;
           img.alt = '';
           img.loading = 'lazy';
           btn.appendChild(img);
@@ -2680,32 +3056,42 @@
         const info = document.createElement('div');
         info.className = 'movie-suggestion-info';
 
-        const year = item.releaseDate ? String(item.releaseDate).slice(0, 4) : '';
-        const titleText = item.trackName || 'Untitled';
+        const year = item.release_date ? String(item.release_date).slice(0, 4) : '';
+        const titleText = item.title || item.original_title || 'Untitled';
         const titleEl = document.createElement('div');
         titleEl.className = 'movie-suggestion-title';
         titleEl.textContent = year ? `${titleText} (${year})` : titleText;
 
+        const rating = typeof item.vote_average === 'number' && item.vote_average > 0
+        ? `★ ${item.vote_average.toFixed(1)}`
+        : 'TMDB';
+        const overviewSnippet = item.overview ? ` • ${item.overview.slice(0, 48)}…` : '';
         const metaEl = document.createElement('div');
         metaEl.className = 'movie-suggestion-meta';
-        metaEl.textContent = item.artistName || 'Unknown Director / Cast';
+        metaEl.textContent = `${rating}${overviewSnippet}`;
 
         info.appendChild(titleEl);
         info.appendChild(metaEl);
         btn.appendChild(info);
 
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
+          const fullTitle = year ? `${titleText} (${year})` : titleText;
           if (this.titleInput) {
-            this.titleInput.value = year ? `${titleText} (${year})` : titleText;
+            this.titleInput.value = fullTitle;
           }
-          if (this.actorInput) {
-            this.actorInput.value = item.artistName || '';
-          }
-          if (this.posterInput && posterUrl100 && isValidHttpUrl(posterUrl100, false)) {
-            this.posterInput.value = posterUrl100.replace('100x100bb', '400x600bb');
+          if (this.posterInput) {
+            this.posterInput.value = posterPath.startsWith('/')
+            ? `https://image.tmdb.org/t/p/w500${posterPath}`
+            : '';
           }
           this.hideSuggestions();
-          if (this.actorInput) this.actorInput.focus();
+
+          if (this.actorInput) {
+            this.actorInput.value = 'Loading cast...';
+            const topCast = await this.fetchMovieCast(item.id);
+            this.actorInput.value = topCast;
+            this.actorInput.focus();
+          }
         });
 
         this.suggestionsEl.appendChild(btn);
@@ -2742,7 +3128,7 @@
           }
           this.searchDebounceTimer = setTimeout(() => {
             this.fetchMovieSuggestions(q);
-          }, 400);
+          }, 350);
         });
       }
       if (this.actorInput) {
@@ -2790,8 +3176,8 @@
   }
 
   /* ==========================================================================
-     13. Custom Wallpaper Layer Controller
-     ========================================================================== */
+   * 13. Custom Wallpaper Layer Controller
+   * ========================================================================== */
 
   class WallpaperController {
     constructor() {
@@ -2804,8 +3190,8 @@
 
       this.config = {
         dataUrl: '',
-        dim: 55,
-        blur: 2
+ dim: 55,
+ blur: 2
       };
       this.saveTimer = null;
 
@@ -2819,15 +3205,15 @@
 
     applyWallpaper() {
       const root = document.documentElement;
-      const hasSafeImage = isSafeDataImageUrl(this.config.dataUrl);
+      const hasImage = Boolean(this.config.dataUrl);
 
       root.style.setProperty(
         '--wallpaper-image',
-        hasSafeImage ? `url("${this.config.dataUrl}")` : 'none'
+        hasImage ? `url("${this.config.dataUrl}")` : 'none'
       );
       root.style.setProperty('--wallpaper-dim', String((this.config.dim ?? 55) / 100));
       root.style.setProperty('--wallpaper-blur', `${this.config.blur ?? 2}px`);
-      document.body.classList.toggle('has-wallpaper', hasSafeImage);
+      document.body.classList.toggle('has-wallpaper', hasImage);
 
       if (this.dimInput) this.dimInput.value = String(this.config.dim ?? 55);
       if (this.dimValueEl) this.dimValueEl.textContent = `${this.config.dim ?? 55}%`;
@@ -2841,9 +3227,9 @@
         const saved = stored && stored[STORAGE_KEYS.WALLPAPER_CONFIG];
         if (saved && typeof saved === 'object') {
           this.config = {
-            dataUrl: isSafeDataImageUrl(saved.dataUrl) ? saved.dataUrl : '',
-            dim: Number.isFinite(Number(saved.dim)) ? Math.max(0, Math.min(85, Number(saved.dim))) : 55,
-            blur: Number.isFinite(Number(saved.blur)) ? Math.max(0, Math.min(16, Number(saved.blur))) : 2
+            dataUrl: typeof saved.dataUrl === 'string' ? saved.dataUrl : '',
+ dim: Number.isFinite(Number(saved.dim)) ? Number(saved.dim) : 55,
+ blur: Number.isFinite(Number(saved.blur)) ? Number(saved.blur) : 2
           };
         } else {
           this.config = { dataUrl: '', dim: 55, blur: 2 };
@@ -2953,8 +3339,8 @@
   }
 
   /* ==========================================================================
-     14. One-Click JSON Backup & Restore Controller
-     ========================================================================== */
+   * 14. One-Click JSON Backup & Restore Controller
+   * ========================================================================== */
 
   class BackupController {
     constructor() {
@@ -2981,89 +3367,15 @@
       }
     }
 
-    sanitizeImportedData(rawData) {
-      const sanitized = {};
-
-      if (Array.isArray(rawData[STORAGE_KEYS.PINNED_SHORTCUTS])) {
-        sanitized[STORAGE_KEYS.PINNED_SHORTCUTS] = rawData[STORAGE_KEYS.PINNED_SHORTCUTS]
-          .filter((item) => item && typeof item === 'object' && isValidHttpUrl(item.url, true))
-          .map((item) => ({
-            id: typeof item.id === 'string' ? item.id : `pin-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-            title: typeof item.title === 'string' ? item.title.trim().slice(0, 64) : getDisplayDomain(item.url),
-            url: toSafeHttpUrl(item.url),
-            isPinned: true,
-            isCustom: Boolean(item.isCustom)
-          }));
-      }
-
-      if (Array.isArray(rawData[STORAGE_KEYS.HIDDEN_URLS])) {
-        sanitized[STORAGE_KEYS.HIDDEN_URLS] = rawData[STORAGE_KEYS.HIDDEN_URLS]
-          .filter((u) => typeof u === 'string' && u.length > 0 && u.length < 256);
-      }
-
-      if (Array.isArray(rawData[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS])) {
-        sanitized[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS] = rawData[STORAGE_KEYS.CUSTOM_YTM_PLAYLISTS]
-          .filter((p) => p && typeof p === 'object' && isValidHttpUrl(p.url, true))
-          .map((p) => {
-            const rawCover = typeof p.cover === 'string' ? p.cover.trim() : '';
-            const safeCover = (isSafeDataImageUrl(rawCover) || isValidHttpUrl(rawCover, false) || /^assets\/[a-zA-Z0-9_./-]+$/.test(rawCover))
-              ? rawCover
-              : '';
-            return {
-              id: typeof p.id === 'string' ? p.id : `ytm-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-              title: typeof p.title === 'string' ? p.title.trim().slice(0, 64) : 'Untitled Playlist',
-              url: toSafeHttpUrl(p.url),
-              cover: safeCover
-            };
-          });
-      }
-
-      if (Array.isArray(rawData[STORAGE_KEYS.MOVIE_WATCHLIST])) {
-        sanitized[STORAGE_KEYS.MOVIE_WATCHLIST] = rawData[STORAGE_KEYS.MOVIE_WATCHLIST]
-          .filter((m) => m && typeof m === 'object' && typeof m.title === 'string' && m.title.trim().length > 0)
-          .map((m) => {
-            const rawPoster = typeof m.posterUrl === 'string' ? m.posterUrl.trim() : '';
-            return {
-              id: typeof m.id === 'string' ? m.id : `movie-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-              title: m.title.trim().slice(0, 120),
-              actor: typeof m.actor === 'string' ? m.actor.trim().slice(0, 120) : '',
-              posterUrl: isValidHttpUrl(rawPoster, false) ? rawPoster : '',
-              watched: Boolean(m.watched)
-            };
-          });
-      }
-
-      if (rawData[STORAGE_KEYS.THEME_CONFIG] && typeof rawData[STORAGE_KEYS.THEME_CONFIG] === 'object') {
-        const cfg = rawData[STORAGE_KEYS.THEME_CONFIG];
-        sanitized[STORAGE_KEYS.THEME_CONFIG] = {
-          themeId: typeof cfg.themeId === 'string' ? cfg.themeId : THEME_PRESETS[0].id,
-          customAccent: typeof cfg.customAccent === 'string' && /^#[0-9a-fA-F]{6}$/.test(cfg.customAccent)
-            ? cfg.customAccent
-            : THEME_PRESETS[0].accent
-        };
-      }
-
-      if (rawData[STORAGE_KEYS.WALLPAPER_CONFIG] && typeof rawData[STORAGE_KEYS.WALLPAPER_CONFIG] === 'object') {
-        const wp = rawData[STORAGE_KEYS.WALLPAPER_CONFIG];
-        sanitized[STORAGE_KEYS.WALLPAPER_CONFIG] = {
-          dataUrl: isSafeDataImageUrl(wp.dataUrl) ? wp.dataUrl : '',
-          dim: Number.isFinite(Number(wp.dim)) ? Math.max(0, Math.min(85, Number(wp.dim))) : 55,
-          blur: Number.isFinite(Number(wp.blur)) ? Math.max(0, Math.min(16, Number(wp.blur))) : 2
-        };
-      }
-
-      return sanitized;
-    }
-
     async exportBackup() {
       try {
         const allKeys = Object.values(STORAGE_KEYS);
         const stored = await extensionApi.storage.local.get(allKeys);
 
         const payload = {
-          version: '1.6.0',
-          exportedAt: new Date().toISOString(),
-          data: stored || {}
+          version: '1.7.0',
+ exportedAt: new Date().toISOString(),
+ data: stored || {}
         };
 
         const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -3095,7 +3407,13 @@
           return;
         }
 
-        const toRestore = this.sanitizeImportedData(parsed.data);
+        const allowedKeys = new Set(Object.values(STORAGE_KEYS));
+        const toRestore = {};
+        for (const [key, val] of Object.entries(parsed.data)) {
+          if (allowedKeys.has(key)) {
+            toRestore[key] = val;
+          }
+        }
 
         if (Object.keys(toRestore).length === 0) {
           showToast('No valid extension data found');
@@ -3106,6 +3424,7 @@
 
         if (themeController) await themeController.loadTheme();
         if (wallpaperController) await wallpaperController.loadWallpaper();
+        if (searchController) await searchController.loadSelectedEngine();
         if (shortcutsController) {
           await shortcutsController.loadStoredData();
           await shortcutsController.renderGrid();
@@ -3115,6 +3434,7 @@
           playlistsController.render();
         }
         if (watchlistController) {
+          await watchlistController.loadApiKey();
           await watchlistController.loadMovies();
           watchlistController.render();
         }
@@ -3128,8 +3448,8 @@
   }
 
   /* ==========================================================================
-     15. Keyboard-First Global Navigation Controller
-     ========================================================================== */
+   * 15. Keyboard-First Global Navigation Controller
+   * ========================================================================== */
 
   class KeyboardNavigationController {
     constructor() {
@@ -3155,13 +3475,10 @@
       const playlist = playlistsController.playlists[index];
       if (!playlist || !playlist.url) return;
 
-      const safeUrl = toSafeHttpUrl(playlist.url, '');
-      if (!safeUrl) return;
-
       if (OPEN_PLAYLIST_IN_NEW_TAB) {
-        window.open(safeUrl, '_blank', 'noopener,noreferrer');
+        window.open(playlist.url, '_blank', 'noopener,noreferrer');
       } else {
-        window.location.href = safeUrl;
+        window.location.href = playlist.url;
       }
     }
 
@@ -3212,8 +3529,8 @@
   }
 
   /* ==========================================================================
-     16. Application Bootstrap
-     ========================================================================== */
+   * 16. Application Bootstrap
+   * ========================================================================== */
 
   let shortcutsController;
   let modalController;
@@ -3223,6 +3540,7 @@
   let themeController;
   let wallpaperController;
   let watchlistController;
+  let searchController;
   let backupController;
   let keyboardNavigationController;
 
@@ -3231,7 +3549,7 @@
     wallpaperController = new WallpaperController();
     watchlistController = new WatchlistController();
     new ClockController();
-    new SearchController();
+    searchController = new SearchController();
     shortcutsController = new ShortcutsController();
     modalController = new ModalController();
     playlistsController = new PlaylistsController();

@@ -1,49 +1,43 @@
 {
   "manifest_version": 3,
-  "name": "Velvet New Tab",
-  "version": "1.6.0",
-  "description": "Minimalist custom New Tab with Rainmeter-style clock, DuckDuckGo bangs, YTM live player, and watchlist.",
-  "icons": {
-    "48": "assets/icon.svg",
-    "96": "assets/icon.svg"
-  },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  },
+  "name": "Velvet & Rose New Tab",
+  "version": "1.7.0",
+  "description": "A minimalist, customizable new tab page with a Rainmeter-style clock, multi-engine search switcher, live YouTube Music mini-player, and TMDB movie watchlist.",
   "permissions": [
+    "storage",
     "topSites",
     "history",
-    "storage",
-    "unlimitedStorage",
     "tabs",
     "scripting"
   ],
   "host_permissions": [
-    "*://music.youtube.com/*",
-    "*://*.youtube.com/*",
-    "*://*.spotify.com/*",
-    "https://itunes.apple.com/*"
+    "https://music.youtube.com/*",
+    "https://www.youtube.com/*",
+    "https://open.spotify.com/*",
+    "https://api.themoviedb.org/*",
+    "https://image.tmdb.org/*"
   ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
   "content_scripts": [
     {
       "matches": [
-        "*://music.youtube.com/*",
-        "*://*.youtube.com/*",
-        "*://*.spotify.com/*"
+        "https://music.youtube.com/*",
+        "https://www.youtube.com/*",
+        "https://open.spotify.com/*"
       ],
-      "js": [
-        "ytm-bridge.js"
-      ],
+      "js": ["ytm-bridge.js"],
       "run_at": "document_idle"
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; img-src 'self' data: https:; connect-src 'self' https://api.themoviedb.org;"
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "velvet-rose-newtab-v2@kruses.local",
-      "strict_min_version": "140.0",
-      "data_collection_permissions": {
-        "required": ["none"]
-      }
+      "strict_min_version": "109.0"
     }
   }
 }
