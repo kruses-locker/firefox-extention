@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="32%" r="65%">
+      <stop offset="0%" stop-color="#2a121a"/>
+      <stop offset="100%" stop-color="#12090c"/>
+    </radialGradient>
+    <linearGradient id="roseGrad" x1="20%" y1="15%" x2="80%" y2="85%">
+      <stop offset="0%" stop-color="#fda4af"/>
+      <stop offset="55%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e11d48"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Obsidian-Burgundy Squircle -->
+  <rect x="4" y="4" width="88" height="88" rx="22" fill="url(#bgGlow)" stroke="rgba(251, 113, 133, 0.35)" stroke-width="2"/>
+
+  <!-- Subtle Inner Hairline Ring -->
+  <circle cx="48" cy="48" r="28" fill="none" stroke="rgba(251, 113, 133, 0.14)" stroke-width="1.2"/>
+
+  <!-- Geometric Rose-Blush V / Compass-Star Emblem -->
+  <path d="M28 31 L48 67 L68 31 L59 31 L48 52 L37 31 Z" fill="url(#roseGrad)"/>
+  <path d="M48 21 L51.2 29.8 L60 33 L51.2 36.2 L48 45 L44.8 36.2 L36 33 L44.8 29.8 Z" fill="#fda4af" opacity="0.92"/>
+</svg>
